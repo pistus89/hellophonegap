@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<head>
-  <title>helloworld</title>
-</head>
-<body>
-  <script>
-    alert("hello world!");
-  </script>
-</body>
+<html>
+  <head>
+    <title>Device Properties Example</title>
+    <script type="text/javascript" src="jquery-1.10.2.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="jquery.exif.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+		
+		function gotFS() {
+			var reader = fileSystem.root.createReader();
+		    reader.readEntries(gotList, fail);
+		}
+		
+		function gotList(entries) {
+		    var i;
+		    for (i=0; i<entries.length; i++) {
+		        $("#list").append("<p>" + entries[i].name + "</p>");
+		    }
+		}
+
+		function fail(error) {
+		    alert("Failed to list directory contents: " + error.code);
+		}
+		
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		
+	
+	});
+
+    </script>
+  </head>
+  <body>
+    <p id="deviceProperties">getLocation</p>
+    <div id="name"></div>
+    <div id="imageLocations">getPictureLocations</div>
+    <br>
+    <input type="file" id="files" name="files[]" multiple />
+	<output id="list"></output>
+  </body>
 </html>
